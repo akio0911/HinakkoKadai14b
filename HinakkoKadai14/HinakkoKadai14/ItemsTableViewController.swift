@@ -9,23 +9,21 @@ import UIKit
 
 class ItemsTableViewController: UITableViewController {
 
+    private let keyName = "Name"
+    private let keyCheck = "Check"
 
-        let KeyName = "Name"
-        let KeyCheck = "Check"
+    private var items: [Dictionary<String, Any>] = []
 
-        var items: [Dictionary<String,Any>] = []
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        override func viewDidLoad() {
-            super.viewDidLoad()
-
-            self.items = [
-                [KeyName:"りんご", KeyCheck:false],
-                [KeyName:"みかん", KeyCheck:true],
-                [KeyName:"バナナ", KeyCheck:false],
-                [KeyName:"パイナップル", KeyCheck:true]
-            ]
-        }
-
+        self.items = [
+            [keyName: "りんご", keyCheck: false],
+            [keyName: "みかん", keyCheck: true],
+            [keyName: "バナナ", keyCheck: false],
+            [keyName: "パイナップル", keyCheck: true]
+        ]
+    }
 
     // MARK: - Table view data source
 
@@ -43,12 +41,13 @@ class ItemsTableViewController: UITableViewController {
 
         let item = items[indexPath.row]
 
-        cell.checkImageView.image = nil
-        if item[KeyCheck] as? Bool == true {
+        if item[keyCheck] as? Bool == true {
             cell.checkImageView.image = UIImage(named: "checkMark")
+        } else {
+            cell.checkImageView.image = nil
         }
 
-        cell.nameLabel.text = (item[KeyName] as? String) ?? ""
+        cell.nameLabel.text = (item[keyName] as? String) ?? ""
 
         return cell
     }
@@ -59,7 +58,7 @@ class ItemsTableViewController: UITableViewController {
 
     @IBAction func exitFromAddBySave(segue:UIStoryboardSegue) {
         if let add = segue.source as? AddItemViewController {
-            let item:Dictionary<String,Any> = [KeyName:add.nameTextField.text as Any, KeyCheck:false]
+            let item: Dictionary<String, Any> = [keyName: add.nameTextField.text ?? "", keyCheck: false]
             self.items.append(item)
             self.tableView.reloadData()
         }
